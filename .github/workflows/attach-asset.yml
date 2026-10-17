@@ -1,0 +1,95 @@
+# AnimeLat · Adjuntar instalador subido desde el panel (/169)
+#
+# ¿Por qué existe este workflow?
+#   El navegador del panel no puede subir archivos de cientos de MB al
+#   endpoint de assets de GitHub (uploads.github.com no manda cabeceras
+#   CORS) y el hosting del panel (InfinityFree) no puede recibirlos (20MB
+#   por subida, 60s por script). Solución: el navegador sube el archivo en
+#   trozos como blobs de git (api.github.com SÍ tiene CORS) y empuja un
+#   commit a la rama `upload/request` con `upload/request.json`; este
+#   workflow descarga los blobs por SHA, ensambla el archivo, verifica
+#   tamaño y SHA-256 y lo adjunta a la release del tag indicado.
+#
+#   Nada de esto ensucia el repositorio: los blobs quedan sueltos (GitHub
+#   los recolecta) y la rama solo guarda un request.json de ~1 KB.
+#
+# Probar a mano: desde el panel, o `node tools/tmp-gh-upload-smoke.mjs`.
+
+name: Adjuntar instalador
+
+on:
+  push:
+    branches: [upload/request]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: attach-asset-upload-request
+  cancel-in-progress: false
+
+jobs:
+  attach:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Leer la solicitud
+        id: req
+        run: |
+          set -euo pipefail
+          test -f upload/request.json
+          echo "skip=$(jq -r '.skip // false' upload/request.json)" >> "$GITHUB_OUTPUT"
+          echo "tag=$(jq -r '.tag // empty' upload/request.json)" >> "$GITHUB_OUTPUT"
+          echo "name=$(jq -r '.name // empty' upload/request.json)" >> "$GITHUB_OUTPUT"
+          echo "sha256=$(jq -r '.sha256 // empty' upload/request.json)" >> "$GITHUB_OUTPUT"
+          echo "size=$(jq -r '.size // 0' upload/request.json)" >> "$GITHUB_OUTPUT"
+          echo "parts=$(jq -r '.parts | length' upload/request.json)" >> "$GITHUB_OUTPUT"
+          echo "Solicitud: tag=${{ steps.req.outputs.tag }} skip=${{ steps.req.outputs.skip }}"
+
+      - name: Descargar los trozos
+        if: ${{ steps.req.outputs.skip != 'true' && steps.req.outputs.tag != '' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p parts
+          n=$(jq '.parts | length' upload/request.json)
+          test "$n" -ge 1
+          for i in $(seq 0 $((n - 1))); do
+            sha=$(jq -r ".parts[$i]" upload/request.json)
+            out=$(printf 'parts/%03d' "$i")
+            curl -fsSL \
+              -H "Authorization: Bearer $GH_TOKEN" \
+              -H "Accept: application/vnd.github.raw" \
+              -o "$out" \
+              "https://api.github.com/repos/${GITHUB_REPOSITORY}/git/blobs/${sha}"
+            echo "trozos[$i] ${sha} → $(stat -c%s "$out") bytes"
+          done
+
+      - name: Ensamblar y verificar
+        if: ${{ steps.req.outputs.skip != 'true' && steps.req.outputs.tag != '' }}
+        env:
+          NAME: ${{ steps.req.outputs.name }}
+          SIZE: ${{ steps.req.outputs.size }}
+          SHA256: ${{ steps.req.outputs.sha256 }}
+        run: |
+          set -euo pipefail
+          cat parts/* > "$NAME"
+          test "$(stat -c%s "$NAME")" = "$SIZE"
+          echo "${SHA256}  ${NAME}" | sha256sum -c -
+          echo "Verificado: ${NAME} (${SIZE} bytes)"
+
+      - name: Adjuntar a la release
+        if: ${{ steps.req.outputs.skip != 'true' && steps.req.outputs.tag != '' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.req.outputs.tag }}
+          NAME: ${{ steps.req.outputs.name }}
+        run: |
+          set -euo pipefail
+          gh release view "$TAG" >/dev/null 2>&1 || \
+            gh release create "$TAG" --title "$TAG" --notes "Publicada desde el panel de AnimeLat."
+          gh release upload "$TAG" "./$NAME" --clobber
+          echo "Listo: https://github.com/${GITHUB_REPOSITORY}/releases/tag/${TAG}"
