@@ -1,0 +1,11 @@
+{
+  "v": 1,
+  "tag": "v0.0.0-paneltest",
+  "name": "AnimeLat-Setup-9.9.99.exe",
+  "parts": [
+    "5feaebc47d50f3350e4d716413154d5ed3c3558b"
+  ],
+  "sha256": "36b73479421f4cd9f053dea0a3eebb2c529bb60465865f1f388d57c8d17cd440",
+  "size": 3145728,
+  "createdUtc": "2026-10-17T02:05:15.790Z"
+}
