@@ -1,12 +1,11 @@
 {
   "v": 1,
-  "tag": "v0.0.0-paneltest2",
-  "name": "AnimeLat-Setup-9.9.98.exe",
+  "tag": "v1.1.2",
+  "name": "AnimeLat-1.1.2.apk",
   "parts": [
-    "ad42f1562e8a5a6ae0121d9db2754f1f749dfd10",
-    "3ea75e1fca2d13489986db8d23ab0d87d168a18f"
+    "cc3d631ff9b148aa87182b5b83cf51c9035a540f"
   ],
-  "sha256": "d6cb443ea0a44e62c9bbecf297d49873c18f243737f76a361a649948c525ed46",
-  "size": 50331648,
-  "createdUtc": "2026-10-17T02:08:43.678Z"
+  "sha256": "ad660459e19ee2184dc816d28e59306e79ec766c532d7ca8858c882a3c62ea0f",
+  "size": 23043037,
+  "createdUtc": "2026-10-17T02:35:15.655Z"
 }
