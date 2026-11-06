@@ -1,13 +1,13 @@
 {
   "v": 1,
-  "tag": "v1.1.7",
-  "name": "AnimeLat-1.1.7.apk",
+  "tag": "v1.1.8",
+  "name": "AnimeLat-1.1.8.apk",
   "parts": [
     "d5854f76a61ecd28c59bf90e4b988175c780919b",
-    "e0e36165a82d25f57b06326cd4e6dfa89280ff64",
-    "44a4e99f352a2121eef50149e2d93036c78232a4"
+    "ba1b960b83b2ed01bd1ee124db879d29e3a25047",
+    "4a9dc590bb0f721ff1e396293beed331b01d76b8"
   ],
-  "sha256": "412829ba1c5294e4b9f74ae5f6463831ad5da235da6311f7adebad4d4f282a60",
-  "size": 23206765,
-  "createdUtc": "2026-11-05T01:37:29.222Z"
+  "sha256": "02cfef2a9849fa3c36f5293cee749f90acd9de2f5a29be045569881e4299c165",
+  "size": 23698372,
+  "createdUtc": "2026-11-06T02:03:46.009Z"
 }
