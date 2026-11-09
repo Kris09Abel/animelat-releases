@@ -1,13 +1,24 @@
 {
   "v": 1,
-  "tag": "v1.1.8",
-  "name": "AnimeLat-1.1.8.apk",
+  "tag": "v2.0.2",
+  "name": "AnimeLat-Setup-2.0.2-x64.exe",
   "parts": [
-    "d5854f76a61ecd28c59bf90e4b988175c780919b",
-    "ba1b960b83b2ed01bd1ee124db879d29e3a25047",
-    "4a9dc590bb0f721ff1e396293beed331b01d76b8"
+    "dba51803a40acc9aa245f0fcf15df2c419f09b00",
+    "641b6690aef966b0febd02997e09bf493fd13875",
+    "23d0fd7e43425f257bf4a6a7bc917d5f121af18f",
+    "d20bd97f3c4fb693c691f3cda86264d7c350ca27",
+    "957c46f2b5ce0e006a3c1c0ab4b60c09e65feb5c",
+    "e0c3c68c148458ca776ea71b222f5a87b07d08d4",
+    "825b639f5aba5f36bb075742bfead1b204cad414",
+    "54b41e342c895cc57dbc6ee183c731ae351e5de0",
+    "4b28b41eb834f21f680baa8f913d82d4082777cc",
+    "40fcc1de2ad6494d25df9883d63a2ae361f3af5b",
+    "42dac3406e01c51e308e6d590015e94724548108",
+    "85e92eedbe8cbd7152118c3af39eb7b0ff920712",
+    "424cd6299d13d85b10bbfa6c53aa8105ed6b0f33",
+    "a54e1696477a18bd066a6f2a174d9d2b473aeb00"
   ],
-  "sha256": "02cfef2a9849fa3c36f5293cee749f90acd9de2f5a29be045569881e4299c165",
-  "size": 23698372,
-  "createdUtc": "2026-11-06T02:03:46.009Z"
+  "sha256": "b10f05173d23a7acda97ac0c52b1fc7ab2232dcfb50b64fc735a39d8dd6c2934",
+  "size": 93012553,
+  "createdUtc": "2026-11-09T03:34:00.183Z"
 }
